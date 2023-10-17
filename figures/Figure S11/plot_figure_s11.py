@@ -19,7 +19,7 @@ r2_units_dist = f['r2_units_dist']
 times           = f['times']
 
 n_sup_all   = np.array([1e-3,1e-2,0.05,0.1,0.3,0.5,1,10])
-num_exps    = 5
+num_exps    = times.shape[0]
 num_trials  = np.array([30,50,100]).astype(int)
 
 # The dimensions are [num_exps,num_trials,n_sup]
@@ -51,7 +51,7 @@ plt.xlabel('Noise s.d.')
 plt.ylabel('Accuracy ($R^2$) of output in a novel distraction trial')
 plt.legend()
 #plt.xticks([0.01,0.1,1],['1%','10%','100%'])
-plt.savefig('Figure_N1.pdf', bbox_inches='tight')
+plt.savefig('FigureS11-python.pdf', bbox_inches='tight')
 plt.show()
 
 

@@ -43,16 +43,16 @@ labels_all = ["CoRNN","Gradient descent - CE", \
 for pick in [0,3,5,2,6,7]:
 
     temp = np.nanmedian(cor_p[pick,:,:],0)
-    temp_std = np.std(cor_p[pick,:,:],0) 
+    temp_std = np.std(cor_p[pick,:,:],0) / np.sqrt(cor_p.shape[1]) 
     x = np.nanmedian(times[pick,:,:],0)
-    x_std = np.std(times[pick,:,:],0) 
+    x_std = np.std(times[pick,:,:],0) / np.sqrt(cor_p.shape[1]) 
     plt.errorbar(x,temp,temp_std,x_std,label = labels_all[pick], lw=2)
 
 plt.gca().spines['top'].set_visible(False)
 plt.gca().spines['right'].set_visible(False)
 plt.gca().spines['left'].set_linewidth(2)
 plt.gca().spines['bottom'].set_linewidth(2)
-
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 
 
@@ -62,7 +62,7 @@ ax.xaxis.set_minor_locator(plt.NullLocator())
 plt.xlabel('Time (s)',fontsize = 20)    
 plt.ylabel('Accuracy',fontsize = 20)
 
-plt.savefig("FigureN2.pdf", bbox_inches='tight')
+plt.savefig("FigureS3-python.pdf", bbox_inches='tight')
 
 
 

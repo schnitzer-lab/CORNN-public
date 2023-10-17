@@ -71,90 +71,6 @@ class Model(nn.Module):
         return hidden_states,o
 
 
-#%% Get network data
-f = np.load('model0_input_noise0dot1_100trialdata.npz')
-r_in_all = f['r_in_all']
-r_out_all = f['r_out_all']
-u_all     = f['u_all']
-out_all   = f['out_all']
-
-n_in        = 1;
-n_rec       = 5000;    
-T = 700
-
-model = Model(n_in,n_rec,n_in)
-model = torch.load('model_0.pt')
-r_init   = torch.rand(n_rec)-0.5
-out_gt = np.exp(-((np.arange(T) - 500)**2)/(2*20**2))
-
-
-u      = torch.zeros([T,n_in])
-u[0:100,0] = 1
-
-u_no = u.detach().numpy().copy();
-
-# forward
-h,out = model(u,r_init,0.1)
-r_or_no = h.detach().numpy();
-out_or_no = out.detach().numpy()
-
-u[200:210,0] = 0.5
-# forward
-h,out = model(u,r_init,0.1)
-r_or_yes = h.detach().numpy();
-out_or_yes = out.detach().numpy().copy()
-
-
-u_yes    = u.detach().numpy();
-r_init   = r_init.detach().numpy()
-W_out_nw = model.W_out.data.detach().numpy()
-W_rec_nw = model.W_rec.data.detach().numpy()
-W_in_nw  = model.W_in.data.detach().numpy()
-
-#%% Plot Figure 7B, Original network outputs without distractor
-_,ax = plt.subplots(figsize = (9,3))
-
-ax.add_patch(patches.Rectangle((0, 0), 50, 10, color='black', alpha=0.3,zorder=100))
-ax.add_patch(patches.Rectangle((460, 0), 80, 10, color='black', alpha=0.3,zorder=100))
-plt.imshow(r_or_no[:,:500].T,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
-plt.xlabel('Time (ms)')
-plt.ylabel('Neuron ID')
-plt.colorbar()
-plt.savefig('Figure 7B1.pdf', bbox_inches='tight')
-plt.show()
-
-_,ax = plt.subplots(figsize = (9,1.5))
-plt.plot(u_no,color = 'black',ls = '--',label = 'Input')
-plt.plot(out_gt,color = 'black',label = 'Target Output')
-plt.plot(out_or_no,color = 'blue',label = 'Network Output')
-plt.xlabel('Time (ms)')
-plt.ylabel('Input/output (a.u.)')
-plt.savefig('Figure 7B2.pdf', bbox_inches='tight')
-plt.show()
-
-
-#%% Plot Figure 7C, Original network outputs with distractor
-_,ax = plt.subplots(figsize = (9,3))
-
-ax.add_patch(patches.Rectangle((0, 0), 50, 10, color='black', alpha=0.3,zorder=100))
-ax.add_patch(patches.Rectangle((460, 0), 80, 10, color='black', alpha=0.3,zorder=100))
-ax.add_patch(patches.Rectangle((200, 0), 10, 10, color='black', alpha=0.3,zorder=100))
-plt.imshow(r_or_yes[:,:500].T,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
-plt.xlabel('Time (ms)')
-plt.ylabel('Neuron ID')
-plt.colorbar()
-plt.savefig('Figure 7C1.pdf', bbox_inches='tight')
-plt.show()
-
-_,ax = plt.subplots(figsize = (9,1.5))
-plt.plot(u_yes,color = 'black',ls = '--',label = 'Input')
-plt.plot(out_gt,color = 'black',label = 'Target Output')
-plt.plot(out_or_yes,color = 'blue',label = 'Network Output')
-plt.xlabel('Time (ms)')
-plt.ylabel('Input/output (a.u.)')
-plt.legend()
-plt.savefig('Figure 7C2.pdf', bbox_inches='tight')
-plt.show()
 
 
 
@@ -165,6 +81,14 @@ r_in_all = f['r_in_all']
 r_out_all = f['r_out_all']
 u_all     = f['u_all']
 out_all   = f['out_all']
+
+n_in        = 1;
+n_rec       = 5000;    
+
+
+model = Model(n_in,n_rec,n_in)
+model = torch.load('model_0.pt')
+
 
 n_sup = 5000;
 nt=100
