@@ -36,12 +36,12 @@ for i in range(num_trials.shape[0]):
     temp = r2_units_dist[:,1,i,:]
     temp = temp[:,:n_ch]
     plt.errorbar(n_sup_all,np.mean(temp,0),np.std(temp,0)/np.sqrt(num_exps),color = color_all[i],label = num_trials[i])
-    #plt.scatter(n_sup_all,np.mean(temp,0),color = color_all[i],lw = 3)
+    plt.scatter(n_sup_all,np.mean(temp,0),color = color_all[i],lw = 3)
     temp = r2_units_dist[:,0,i,:]
     temp = temp[:,:n_ch]
     plt.errorbar(n_sup_all,np.mean(temp,0),np.std(temp,0)/np.sqrt(num_exps),
                  color = color_all[i],ls = '--')
-    #plt.scatter(n_sup_all,np.mean(temp,0),color = color_all[i],lw = 3)
+    plt.scatter(n_sup_all,np.mean(temp,0),color = color_all[i],lw = 3)
     
 
 

@@ -49,8 +49,8 @@ for file in ['./experiment2a_results.npz','./experiment2b_results.npz']:
                    labelbottom=True, left=True, right=False,
                    labelleft=True,direction='out',length=10,width=2.0,pad=8,labelsize=20)
 
-    for pick in [5,3,4]:
-        f1 = 2/(1/cor_p[pick,:,:] + np.maximum(slopes[pick,:,:],1/slopes[pick,:,:]))
+    for pick in [0,5,3,4]:
+        f1 = cor_p[pick,:,:];#2/(1/cor_p[pick,:,:] + np.maximum(slopes[pick,:,:],1/slopes[pick,:,:]))
         temp = f1.mean(0)
         temp_std = np.std(f1,0) / np.sqrt(cor_p.shape[1])
         plt.errorbar(iter_list,temp,temp_std,label = labels_all[pick], lw=2)
