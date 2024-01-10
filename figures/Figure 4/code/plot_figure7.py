@@ -115,12 +115,31 @@ W_in_nw  = model.W_in.data.detach().numpy()
 
 #%% Plot Figure 7B, Original network outputs with distractors
 
+
+def get_ranked_indices(r,thr = 0.1):
+    n_cell = r.shape[1]
+    max_active = np.zeros(n_cell)
+    for i in range(n_cell):
+        temp = r[:,i]
+        inds = np.argsort(temp)[::-1]
+        if max(temp) < thr:
+            max_active[i] = 710
+        else:
+            max_active[i] = inds[0]
+        
+    inds_all = np.argsort(max_active)
+    return inds_all
+
 _,ax = plt.subplots(figsize = (9,3))
+
+r_show = r_or_yes[:,:500]
+inds_all = get_ranked_indices(r_show)
+r_show = r_show[:,inds_all].T
 
 ax.add_patch(patches.Rectangle((0, 0), 50, 10, color='black', alpha=0.3,zorder=100))
 ax.add_patch(patches.Rectangle((460, 0), 80, 10, color='black', alpha=0.3,zorder=100))
 ax.add_patch(patches.Rectangle((200, 0), 10, 10, color='black', alpha=0.3,zorder=100))
-plt.imshow(r_or_yes[:,:500].T,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
+plt.imshow(r_show,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
 plt.xlabel('Time (ms)')
 plt.ylabel('Neuron ID')
 plt.colorbar()
@@ -210,10 +229,15 @@ out_cornn = (w_out @ r_cornn.T).flatten()
 
 _,ax = plt.subplots(figsize = (9,3))
 
+
+
+r_show2 = r_cornn[:,:500]
+r_show2 = r_show2[:,inds_all].T
+
 ax.add_patch(patches.Rectangle((0, 0), 50, 10, color='black', alpha=0.3,zorder=100))
 ax.add_patch(patches.Rectangle((460, 0), 80, 10, color='black', alpha=0.3,zorder=100))
 ax.add_patch(patches.Rectangle((200, 0), 10, 10, color='black', alpha=0.3,zorder=100))
-plt.imshow(r_cornn[:,:500].T,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
+plt.imshow(r_show2,aspect = 'auto',cmap = 'jet',vmin = -0.5,vmax = 0.5,interpolation = None)
 plt.xlabel('Time (ms)')
 plt.ylabel('Neuron ID')
 plt.colorbar()

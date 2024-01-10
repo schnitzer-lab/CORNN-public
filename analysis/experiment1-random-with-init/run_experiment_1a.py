@@ -40,7 +40,7 @@ T_data = 3000; # 3000 for short
 
 
 num_algs = 9;
-num_exps = 10;
+num_exps = 100;
 iter_list = np.linspace(0,20,21).astype(int)
 slopes = np.zeros([num_algs,num_exps,iter_list.shape[0]])+ np.nan
 rmse = np.zeros([num_algs,num_exps,iter_list.shape[0]])+ np.nan
